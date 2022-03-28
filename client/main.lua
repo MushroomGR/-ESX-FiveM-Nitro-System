@@ -336,7 +336,6 @@ if incar == false then
 	end
 	else
 	for _, pos in pairs(Config.Zones) do
-	print(pos.spot.x,pos.spot.y,pos.spot.z)
 	if GetDistanceBetweenCoords(pos.spot.x,pos.spot.y, pos.spot.z,GetEntityCoords(playerPed)) <= pos.radius then
 	TriggerServerEvent('newnitrocheck',currentPlate)
 	else

@@ -52,12 +52,10 @@ AddEventHandler('nitrocheck1', function(plate,source)
 			},
 	    function (result)
 		if #result == 0 then 
-		print('oeo2')
 		TriggerClientEvent('installit',_source)
 		TriggerEvent('install',plate)
 		TriggerClientEvent('hasnitro',_source,100)
 		else
-		print('oeo')
 	    TriggerClientEvent('esx:showNotification', _source, "~b~Car with plate ~y~"..plate.." ~b~has already got nitro.")
 			end
 		end)
@@ -67,12 +65,10 @@ AddEventHandler('nitrocheck1', function(plate,source)
 			},
 	    function (result)
 		if #result == 0 then 
-		print('oeo2')
 		TriggerClientEvent('installit',_source)
 		TriggerEvent('install',plate)
 		TriggerClientEvent('hasnitro',_source,100)
 		else
-		print('oeo')
 	    TriggerClientEvent('esx:showNotification', _source, "~b~Car with plate ~y~"..plate.." ~b~has already got nitro.")
 			end
 		end)

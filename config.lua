@@ -1,6 +1,5 @@
 Config = {}
 Config.mechanicjob  = false -- turn this to true if you want only mechanics to be able to install nitro to cars inside ls customs 
-Config.mechanicitem = 'blowpipe' -- you need to have this item as a mechanic in order to remove a nitro system from a car
 Config.Zones = {
 				{
 				title = "Example Spot",                                                                                                                                                            

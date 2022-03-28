@@ -17,3 +17,4 @@ Config.Zones = {
 				radius = 25,
 				},
 				}
+Config.UseoxMYSQL = true -- change this to false if you are using the old mysql-async plugin

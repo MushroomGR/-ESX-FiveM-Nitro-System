@@ -126,7 +126,17 @@ ESX.RegisterUsableItem('nitro', function(source)
 	local _source = source
 	local xPlayer  = ESX.GetPlayerFromId(source)
 	TriggerClientEvent('nitroinstall',source)
+	
 end)
+
+ESX.RegisterUsableItem('blowpipe', function(source)
+	local _source = source
+	local xPlayer  = ESX.GetPlayerFromId(source)
+	TriggerClientEvent('nitroremove',source)
+	
+end)
+
+
 
 RegisterServerEvent('setnitrolevel')
 AddEventHandler('setnitrolevel', function(plate,level)
@@ -349,3 +359,5 @@ ESX.RegisterServerCallback('nitro:check', function(source,cb,inp)
 	end)
 	end
 end)
+	
+	

@@ -69,6 +69,7 @@ AddEventHandler('nitrocheck1', function(plate,source)
 		TriggerEvent('install',plate)
 		TriggerClientEvent('hasnitro',_source,100)
 		else
+		print('oeo')
 	    TriggerClientEvent('esx:showNotification', _source, "~b~Car with plate ~y~"..plate.." ~b~has already got nitro.")
 			end
 		end)
@@ -114,6 +115,12 @@ AddEventHandler('nitro:removeInventoryItem', function(item, quantity)
     xPlayer.removeInventoryItem(item, quantity)
 end)
 
+RegisterServerEvent('nitro:addInventoryItem')
+AddEventHandler('nitro:addInventoryItem', function(item, quantity)
+	local _source = source
+    local xPlayer = ESX.GetPlayerFromId(_source)
+    xPlayer.addInventoryItem(item, quantity)
+end)
 
 ESX.RegisterUsableItem('nitro', function(source)
 	local _source = source
@@ -158,6 +165,24 @@ local xPlayer = ESX.GetPlayerFromId(source)
 		['@plate']   = plate,
 		['@nitro']	 = 1,
 		['@nitrolevel']	 = 100,
+	}, function (rowsChanged)
+	end)
+	end
+end)
+
+RegisterServerEvent('removecar')
+AddEventHandler('removecar', function(plate)
+local xPlayer = ESX.GetPlayerFromId(source)
+	if Config.UseoxMYSQL == true then
+	MySQL.query('DELETE FROM nitrocars Where plate = @plate',
+	{
+		['@plate']   = plate,
+	}, function (rowsChanged)
+	end)
+	else
+	MySQL.Async.execute('DELETE FROM nitrocars Where plate = @plate',
+	{
+		['@plate']   = plate,
 	}, function (rowsChanged)
 	end)
 	end
@@ -292,8 +317,35 @@ ESX.RegisterServerCallback('checkitem', function(source,cb,inp)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local xItem = xPlayer.getInventoryItem(inp)
 	if xItem.count<=0 or xItem==nil then
-		cb('fail')
+		cb('notok')
 	else
-		cb('gotit')
+		cb('ok')
 	end
 	end)
+	
+ESX.RegisterServerCallback('nitro:check', function(source,cb,inp)
+	local xPlayer = ESX.GetPlayerFromId(source)
+	if Config.UseoxMYSQL == true then
+	MySQL.query('SELECT * FROM owned_vehicles WHERE plate = @plate', 
+	    	{['@plate']   = inp
+			},
+	    function (result)
+		if #result == 0 then
+		cb('no')
+		else
+		cb('ithas')
+		end
+	end)
+	else 
+	MySQL.Async.fetchAll('SELECT * FROM owned_vehicles WHERE plate = @plate', 
+	    	{['@plate']   = inp
+			},
+	    function (result)
+		if #result == 0 then
+		cb('no')
+		else
+		cb('ithas')
+		end
+	end)
+	end
+end)

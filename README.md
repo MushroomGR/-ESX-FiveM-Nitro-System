@@ -1,8 +1,11 @@
 # -ESX-FiveM-Nitro-System
 
 You can install nitro in cars owned by players (not civilian cars)
+
 Multiple configurations on config file 
+
 /removenitro as a mechanic to remove nitro from cars (you need to have the item you put on config item)
+
 Configuration to be able to put and remove nitro only as mechanic.
 
 forum post:

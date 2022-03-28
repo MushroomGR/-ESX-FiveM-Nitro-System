@@ -371,10 +371,10 @@ AddEventHandler('installit',function()
 			end)
 	end)
 	
-RegisterCommand("removenitro", function(source, args, raw)
+	
+RegisterNetEvent('nitroremove')
+AddEventHandler('nitroremove',function()
    if PlayerData.job.name == 'mechanic' then
-   ESX.TriggerServerCallback('checkitem',function(cb)
-   if cb == 'ok' then 
    local playerPed = PlayerPedId()
 	local coords    = GetEntityCoords(playerPed)	
 	local door = 4
@@ -385,6 +385,7 @@ RegisterCommand("removenitro", function(source, args, raw)
 		if ans == 'ithas' then 
 		ESX.ShowNotification('~o~Removing Nitro...')
 		TriggerServerEvent('removecar',plate)
+		TriggerServerEvent('nitro:removeInventoryItem','blowpipe', 1)
 		SetVehicleDoorOpen(vehicle, door, false, false)    
 		TaskStartScenarioInPlace(playerPed, 'PROP_HUMAN_BUM_BIN', 0, true)
 		Citizen.CreateThread(function()
@@ -402,14 +403,10 @@ RegisterCommand("removenitro", function(source, args, raw)
 	else
 	ESX.ShowNotification('~r~No vehicle nearby')
 	end
-	elseif cb == 'notok' then 
-	ESX.ShowNotification('~r~You dont have the item needed do that...')
-	end
-	end,Config.mechanicitem)
 	else 
 	ESX.ShowNotification('~r~Only Mechanics can do that...')
 	end	
-	end, false)
+	end)
 
 Citizen.CreateThread(function()
 	while true do
@@ -454,4 +451,4 @@ Citizen.CreateThread(function()
     end
 	end
 end)
-	
+		

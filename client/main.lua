@@ -318,10 +318,16 @@ if incar == false then
 	local vehicleClass = GetVehicleClass(vehicle)
 	if DoesEntityExist(vehicle) then 
 	if vehicleClass == 0 or vehicleClass == 1 or vehicleClass == 2 or vehicleClass == 3 or vehicleClass == 4 or vehicleClass == 5 or vehicleClass == 6 or vehicleClass == 7 or vehicleClass == 9 or vehicleClass == 12 then
-	if Config.mecanicjob == true then
+	if Config.mechanicjob == true then
 	if PlayerData.job.name == 'mechanic' then 
-	if GetDistanceBetweenCoords(rampLoc['x'], rampLoc['y'], rampLoc['z'],GetEntityCoords(playerPed)) <= 6.0 then 
-	TriggerServerEvent('newnitrocheck',currentPlate)
+	if GetDistanceBetweenCoords(rampLoc['x'], rampLoc['y'], rampLoc['z'],GetEntityCoords(playerPed)) <= 15.0 then 
+	ESX.TriggerServerCallback('checkitem',function(ans)
+        if ans=="gotit" then
+        TriggerServerEvent('newnitrocheck',currentPlate)
+		elseif ans=="fail" then
+        ESX.ShowNotification('~r~You dont have the proper item to do this')
+        end
+        end,Config.mechanicitem)
 	else
 	ESX.ShowNotification("~r~You need to be near mechanic workshop to do this")
 	end
@@ -329,10 +335,13 @@ if incar == false then
 	ESX.ShowNotification("~r~Only mechanic can do this")
 	end
 	else
-	if GetDistanceBetweenCoords(rampLoc['x'], rampLoc['y'], rampLoc['z'],GetEntityCoords(playerPed)) <= 6.0 then
+	for _, pos in pairs(Config.Zones) do
+	print(pos.spot.x,pos.spot.y,pos.spot.z)
+	if GetDistanceBetweenCoords(pos.spot.x,pos.spot.y, pos.spot.z,GetEntityCoords(playerPed)) <= pos.radius then
 	TriggerServerEvent('newnitrocheck',currentPlate)
 	else
-	ESX.ShowNotification("~r~You need to be near mechanic workshop to do this")
+	ESX.ShowNotification("~r~You need to be near nitro spot to do this")
+	end
 	end
 	end
 	else
@@ -399,3 +408,17 @@ Citizen.CreateThread(function()
 	end
 end)
 
+Citizen.CreateThread(function()
+    for _, blips in pairs(Config.Zones) do
+            blips.blip = AddBlipForCoord(blips.spot.x, blips.spot.y, blips.spot.z)
+            SetBlipSprite(blips.blip, blips.mapBlipId)
+            SetBlipDisplay(blips.blip, 4)
+            SetBlipScale(blips.blip, 1.0)
+            SetBlipColour(blips.blip, blips.mapBlipColor)
+            SetBlipAsShortRange(blips.blip, true)
+            BeginTextCommandSetBlipName("STRING")
+            AddTextComponentString(blips.title)
+            EndTextCommandSetBlipName(blips.blip)
+    end
+end)
+		

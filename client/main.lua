@@ -321,13 +321,7 @@ if incar == false then
 	if Config.mechanicjob == true then
 	if PlayerData.job.name == 'mechanic' then 
 	if GetDistanceBetweenCoords(rampLoc['x'], rampLoc['y'], rampLoc['z'],GetEntityCoords(playerPed)) <= 15.0 then 
-	ESX.TriggerServerCallback('checkitem',function(ans)
-        if ans=="gotit" then
-        TriggerServerEvent('newnitrocheck',currentPlate)
-		elseif ans=="fail" then
-        ESX.ShowNotification('~r~You dont have the proper item to do this')
-        end
-        end,Config.mechanicitem)
+	TriggerServerEvent('newnitrocheck',currentPlate)
 	else
 	ESX.ShowNotification("~r~You need to be near mechanic workshop to do this")
 	end
@@ -338,8 +332,6 @@ if incar == false then
 	for _, pos in pairs(Config.Zones) do
 	if GetDistanceBetweenCoords(pos.spot.x,pos.spot.y, pos.spot.z,GetEntityCoords(playerPed)) <= pos.radius then
 	TriggerServerEvent('newnitrocheck',currentPlate)
-	else
-	ESX.ShowNotification("~r~You need to be near nitro spot to do this")
 	end
 	end
 	end
@@ -378,6 +370,46 @@ AddEventHandler('installit',function()
 			ESX.ShowNotification("~g~Nitro Installed!!")
 			end)
 	end)
+	
+RegisterCommand("removenitro", function(source, args, raw)
+   if PlayerData.job.name == 'mechanic' then
+   ESX.TriggerServerCallback('checkitem',function(cb)
+   if cb == 'ok' then 
+   local playerPed = PlayerPedId()
+	local coords    = GetEntityCoords(playerPed)	
+	local door = 4
+	local vehicle = GetClosestVehicle(coords.x, coords.y, coords.z, 3.0, 0, 71)
+	local plate = GetVehicleNumberPlateText(vehicle)
+	if DoesEntityExist(vehicle) then 
+	ESX.TriggerServerCallback('nitro:check', function(ans)
+		if ans == 'ithas' then 
+		ESX.ShowNotification('~o~Removing Nitro...')
+		TriggerServerEvent('removecar',plate)
+		SetVehicleDoorOpen(vehicle, door, false, false)    
+		TaskStartScenarioInPlace(playerPed, 'PROP_HUMAN_BUM_BIN', 0, true)
+		Citizen.CreateThread(function()
+		Citizen.Wait(6000)
+		ClearPedTasksImmediately(playerPed)
+		SetVehicleDoorShut(vehicle, door, false)
+		TriggerServerEvent('nitro:addInventoryItem','nitro', 1)
+		ESX.ShowNotification("~o~Nitro Removed!!")
+		hasnitro = false
+		end)	
+		elseif ans == 'no' then
+		ESX.ShowNotification('~r~This car has no nitro installed')
+		end
+	end,plate)
+	else
+	ESX.ShowNotification('~r~No vehicle nearby')
+	end
+	elseif cb == 'notok' then 
+	ESX.ShowNotification('~r~You dont have the item needed do that...')
+	end
+	end,Config.mechanicitem)
+	else 
+	ESX.ShowNotification('~r~Only Mechanics can do that...')
+	end	
+	end, false)
 
 Citizen.CreateThread(function()
 	while true do
@@ -408,6 +440,7 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
+	if Config.mechanicjob == false then
     for _, blips in pairs(Config.Zones) do
             blips.blip = AddBlipForCoord(blips.spot.x, blips.spot.y, blips.spot.z)
             SetBlipSprite(blips.blip, blips.mapBlipId)
@@ -419,5 +452,6 @@ Citizen.CreateThread(function()
             AddTextComponentString(blips.title)
             EndTextCommandSetBlipName(blips.blip)
     end
+	end
 end)
-		
+	

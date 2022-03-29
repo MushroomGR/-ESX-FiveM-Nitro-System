@@ -331,6 +331,7 @@ if incar == false then
 	else
 	for _, pos in pairs(Config.Zones) do
 	if GetDistanceBetweenCoords(pos.spot.x,pos.spot.y, pos.spot.z,GetEntityCoords(playerPed)) <= pos.radius then
+	ESX.ShowNotification("~o~Be sure you are near a nitro spot.")
 	TriggerServerEvent('newnitrocheck',currentPlate)
 	end
 	end

@@ -129,7 +129,7 @@ ESX.RegisterUsableItem('nitro', function(source)
 	
 end)
 
-ESX.RegisterUsableItem('blowpipe', function(source)
+ESX.RegisterUsableItem('nitrotools', function(source)
 	local _source = source
 	local xPlayer  = ESX.GetPlayerFromId(source)
 	TriggerClientEvent('nitroremove',source)

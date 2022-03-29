@@ -4,7 +4,7 @@ You can install nitro in cars owned by players (not civilian cars)
 
 Multiple configurations on config file 
 
-Use blowpipe as a mechanic to remove nitro from cars 
+Use nitrotools as a mechanic to remove nitro from cars 
 
 Configuration to be able to put nitro only as mechanic.
 

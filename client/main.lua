@@ -385,7 +385,6 @@ AddEventHandler('nitroremove',function()
 		if ans == 'ithas' then 
 		ESX.ShowNotification('~o~Removing Nitro...')
 		TriggerServerEvent('removecar',plate)
-		TriggerServerEvent('nitro:removeInventoryItem','blowpipe', 1)
 		SetVehicleDoorOpen(vehicle, door, false, false)    
 		TaskStartScenarioInPlace(playerPed, 'PROP_HUMAN_BUM_BIN', 0, true)
 		Citizen.CreateThread(function()

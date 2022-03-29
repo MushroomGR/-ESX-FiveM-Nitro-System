@@ -336,7 +336,7 @@ ESX.RegisterServerCallback('checkitem', function(source,cb,inp)
 ESX.RegisterServerCallback('nitro:check', function(source,cb,inp)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if Config.UseoxMYSQL == true then
-	MySQL.query('SELECT * FROM owned_vehicles WHERE plate = @plate', 
+	MySQL.query('SELECT * FROM nitrocars WHERE plate = @plate', 
 	    	{['@plate']   = inp
 			},
 	    function (result)
@@ -347,7 +347,7 @@ ESX.RegisterServerCallback('nitro:check', function(source,cb,inp)
 		end
 	end)
 	else 
-	MySQL.Async.fetchAll('SELECT * FROM owned_vehicles WHERE plate = @plate', 
+	MySQL.Async.fetchAll('SELECT * FROM nitrocars WHERE plate = @plate', 
 	    	{['@plate']   = inp
 			},
 	    function (result)

@@ -5,3 +5,4 @@ CREATE TABLE IF NOT EXISTS `nitrocars` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES ('nitro', 'Nitro Kit', 1, 0, 1);
+INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES ('nitrotools', 'Nitro Tools', 1, 0, 1);
